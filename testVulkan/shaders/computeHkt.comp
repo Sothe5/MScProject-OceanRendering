@@ -74,18 +74,6 @@ void main() {
 
 	vec2 DispZ = mul(hkt, vec2(0.0, -k.y/kLength));
 
-	imageStore(imageForDispZ, ivec2(gl_GlobalInvocationID.xy), vec4(DispZ,0,1));
-
-	/*
-	if(h0kImage.x < -1)
-	{
-		imageStore(imageForHkt, ivec2(gl_GlobalInvocationID.xy), vec4(1,0,0,1));
-	}
-	else
-	{
-		imageStore(imageForHkt, ivec2(gl_GlobalInvocationID.xy), vec4(0,1,0,1));
-	}
-	*/
-	
+	imageStore(imageForDispZ, ivec2(gl_GlobalInvocationID.xy), vec4(DispZ,0,1));	
 	
 }

@@ -1819,8 +1819,8 @@ private:
 
 	// This method will create all the stages of the graphics pipeline, it will load those stages that are programmable and configure those that are configurable
 	void createGraphicsPipeline() {
-		auto vertShaderCode = readFile("vert.spv");	// Read the already compiled vertex shader file
-		auto fragShaderCode = readFile("frag.spv"); // Read the already compiled fragment shader file
+		auto vertShaderCode = readFile("shaders/vert.spv");	// Read the already compiled vertex shader file
+		auto fragShaderCode = readFile("shaders/frag.spv"); // Read the already compiled fragment shader file
 
 		VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 		VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);	// Wrap the bytecode of the fragment shader code into a VkShaderModule object
@@ -1974,7 +1974,7 @@ private:
 	}
 
 	void createcomputeH0kPipeline() {
-		auto computeShaderCode = readFile("computeH0k.spv");	// Read the already compiled vertex shader file
+		auto computeShaderCode = readFile("shaders/computeH0k.spv");	// Read the already compiled vertex shader file
 
 		VkShaderModule computeShaderModule = createShaderModule(computeShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 
@@ -2020,7 +2020,7 @@ private:
 	}
 
 	void createcomputeHktPipeline() {
-		auto computeShaderCode = readFile("computeHkt.spv");	// Read the already compiled vertex shader file
+		auto computeShaderCode = readFile("shaders/computeHkt.spv");	// Read the already compiled vertex shader file
 
 		VkShaderModule computeShaderModule = createShaderModule(computeShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 
@@ -2066,7 +2066,7 @@ private:
 	}
 
 	void createcomputeFFTAuxPipeline() {
-		auto computeShaderCode = readFile("computeFFTAux.spv");	// Read the already compiled vertex shader file
+		auto computeShaderCode = readFile("shaders/computeFFTAux.spv");	// Read the already compiled vertex shader file
 
 		VkShaderModule computeShaderModule = createShaderModule(computeShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 
@@ -2112,7 +2112,7 @@ private:
 	}
 
 	void createcomputeFFTHorizontalPipeline() {
-		auto computeShaderCode = readFile("computeFFTHorizontal.spv");	// Read the already compiled vertex shader file
+		auto computeShaderCode = readFile("shaders/computeFFTHorizontal.spv");	// Read the already compiled vertex shader file
 
 		VkShaderModule computeShaderModule = createShaderModule(computeShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 
@@ -2158,7 +2158,7 @@ private:
 	}
 
 	void createcomputeFFTVerticalPipeline() {
-		auto computeShaderCode = readFile("computeFFTVertical.spv");	// Read the already compiled vertex shader file
+		auto computeShaderCode = readFile("shaders/computeFFTVertical.spv");	// Read the already compiled vertex shader file
 
 		VkShaderModule computeShaderModule = createShaderModule(computeShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 
@@ -2204,7 +2204,7 @@ private:
 	}
 
 	void createcomputeHeightMapPipeline() {
-		auto computeShaderCode = readFile("computeHeightMap.spv");	// Read the already compiled vertex shader file
+		auto computeShaderCode = readFile("shaders/computeHeightMap.spv");	// Read the already compiled vertex shader file
 
 		VkShaderModule computeShaderModule = createShaderModule(computeShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 
@@ -2252,8 +2252,8 @@ private:
 	// create the pipeline to create a quad wiht the shadow map to be visible
 	// This method will create all the stages of the graphics pipeline, it will load those stages that are programmable and configure those that are configurable
 	void createGraphicsPipelineQuad() {
-		auto vertShaderCode = readFile("vertQuad.spv");	// Read the already compiled vertex shader file
-		auto fragShaderCode = readFile("fragQuad.spv"); // Read the already compiled fragment shader file
+		auto vertShaderCode = readFile("shaders/vertQuad.spv");	// Read the already compiled vertex shader file
+		auto fragShaderCode = readFile("shaders/fragQuad.spv"); // Read the already compiled fragment shader file
 
 		VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 		VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);	// Wrap the bytecode of the fragment shader code into a VkShaderModule object
@@ -2417,8 +2417,8 @@ private:
 	// create the pipeline to create a quad wiht the shadow map to be visible
 	// This method will create all the stages of the graphics pipeline, it will load those stages that are programmable and configure those that are configurable
 	void createGraphicsPipelineCube() {
-		auto vertShaderCode = readFile("vertCube.spv");	// Read the already compiled vertex shader file
-		auto fragShaderCode = readFile("fragCube.spv"); // Read the already compiled fragment shader file
+		auto vertShaderCode = readFile("shaders/vertCube.spv");	// Read the already compiled vertex shader file
+		auto fragShaderCode = readFile("shaders/fragCube.spv"); // Read the already compiled fragment shader file
 
 		VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);	// Wrap the bytecode of the vertex shader code into a VkShaderModule object
 		VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);	// Wrap the bytecode of the fragment shader code into a VkShaderModule object

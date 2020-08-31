@@ -108,15 +108,4 @@ void main() {
 		imageStore(imageForAlternate0DispZ, x, vec4(res.xy,0,1));
 	}
 
-
-	/*
-	if(sb.indicesArray[2046].indices == 2)
-	{
-		imageStore(imageForFFTAux, ivec2(gl_GlobalInvocationID.xy), vec4(1,0,0,1));
-	}
-	else
-	{
-		imageStore(imageForFFTAux, ivec2(gl_GlobalInvocationID.xy), vec4(0,1,0,1));
-	}
-	*/
 }
