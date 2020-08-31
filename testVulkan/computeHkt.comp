@@ -1,0 +1,91 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+#define PI 3.1415926535897932384626433832795
+
+float gravity = 9.8;
+
+layout(binding = 10) uniform UniformBufferTimeHkt {
+    float time;
+} ubt;
+
+
+layout( push_constant ) uniform pushConstants {
+  int fourierGridSize;
+  int spatialDimension;
+} pc;
+
+layout( local_size_x = 32, local_size_y = 32 ) in;
+
+layout(binding = 4, rgba32f) uniform readonly image2D imageForHk0;
+layout(binding = 6, rgba32f) uniform readonly image2D imageForHk0minus;
+layout(binding = 8, rgba32f) uniform writeonly image2D imageForHkt;
+layout(binding = 19, rgba32f) uniform writeonly image2D imageForSlopeX;
+layout(binding = 23, rgba32f) uniform writeonly image2D imageForSlopeZ;
+layout(binding = 27, rgba32f) uniform writeonly image2D imageForDispX;
+layout(binding = 31, rgba32f) uniform writeonly image2D imageForDispZ;
+
+vec2 mul(vec2 v1, vec2 v2)
+{
+	return vec2(v1.x * v2.x - v1.y * v2.y, v1.x * v2.y + v1.y * v2.x);
+}
+
+vec2 Conjugate(vec2 v)
+{
+	return vec2(v.x, -v.y);
+}
+
+
+void main() {
+	
+	vec2 nm = vec2(ivec2(gl_GlobalInvocationID.xy) - (float(pc.fourierGridSize)/2.0));
+	int spatialDim = pc.spatialDimension;
+	if(spatialDim <= 0) spatialDim = 1;
+	vec2 k = vec2((2 * PI * nm.x) / spatialDim, (2 * PI * nm.y) / spatialDim);	
+
+	vec2 h0kImage = imageLoad(imageForHk0, ivec2(gl_GlobalInvocationID.xy)).rg;
+	vec2 h0kMinusImage = imageLoad(imageForHk0minus, ivec2(gl_GlobalInvocationID.xy)).rg;
+	
+	float kLength = length(k);
+	if(kLength < 0.00001) kLength = 0.00001;
+	float w = sqrt(gravity * kLength);
+	float wt = w * ubt.time;
+
+	float cosWt = cos(wt);
+	float sinWt = sin(wt);
+	
+	vec2 expWT = vec2(cosWt, sinWt);
+	vec2 expWTMinus = vec2(cosWt, -1*sinWt);
+
+	vec2 hkt = mul(h0kImage, expWT) + mul(h0kMinusImage, expWTMinus);
+
+	imageStore(imageForHkt, ivec2(gl_GlobalInvocationID.xy), vec4(hkt,0,1));
+	
+	vec2 SlopeX = mul(hkt, vec2(0.0, k.x));
+
+	imageStore(imageForSlopeX, ivec2(gl_GlobalInvocationID.xy), vec4(SlopeX,0,1));
+
+	vec2 SlopeZ = mul(hkt, vec2(0.0, k.y));
+
+	imageStore(imageForSlopeZ, ivec2(gl_GlobalInvocationID.xy), vec4(SlopeZ,0,1));
+
+	vec2 DispX = mul(hkt, vec2(0.0, -k.x/kLength));
+
+	imageStore(imageForDispX, ivec2(gl_GlobalInvocationID.xy), vec4(DispX,0,1));
+
+	vec2 DispZ = mul(hkt, vec2(0.0, -k.y/kLength));
+
+	imageStore(imageForDispZ, ivec2(gl_GlobalInvocationID.xy), vec4(DispZ,0,1));
+
+	/*
+	if(h0kImage.x < -1)
+	{
+		imageStore(imageForHkt, ivec2(gl_GlobalInvocationID.xy), vec4(1,0,0,1));
+	}
+	else
+	{
+		imageStore(imageForHkt, ivec2(gl_GlobalInvocationID.xy), vec4(0,1,0,1));
+	}
+	*/
+	
+	
+}

@@ -1,0 +1,59 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+#define PI 3.1415926535897932384626433832795
+
+layout( push_constant ) uniform pushConstants {
+  int fourierGridSize;
+} pc;
+
+struct Indices
+{
+	int indices;
+};
+
+layout(std140, binding = 13) buffer StorageBuffer {	
+   Indices indicesArray[]; 
+} sb;
+
+layout( local_size_x = 32, local_size_y = 32 ) in;
+
+layout(binding = 11, rgba32f) uniform writeonly image2D imageForFFTAux;
+
+
+void main() {
+	
+	vec2 x = gl_GlobalInvocationID.xy;
+	float k = mod(x.y * float(pc.fourierGridSize) / pow(2,x.x+1), pc.fourierGridSize);	
+
+	vec2 weight = vec2( cos((2.0 * PI * k) / float(pc.fourierGridSize)),  sin((2.0 * PI * k) / float(pc.fourierGridSize)));
+
+	int isTopSide = 0;
+	if(mod(x.y, pow(2, x.x+1)) < pow(2, x.x))
+	{
+		isTopSide = 1;
+	}
+
+	if(x.x == 0)
+	{
+		if(isTopSide == 1)
+		{
+			imageStore(imageForFFTAux, ivec2(x), vec4(weight.x, weight.y, sb.indicesArray[int(x.y)].indices, sb.indicesArray[int(x.y + 1)].indices));
+		}
+		else
+		{
+			imageStore(imageForFFTAux, ivec2(x), vec4(weight.x, weight.y, sb.indicesArray[int(x.y - 1)].indices, sb.indicesArray[int(x.y)].indices));
+		}
+	}
+	else
+	{
+		int offset = int(pow(2, x.x));	
+		if(isTopSide == 1)
+		{
+			imageStore(imageForFFTAux, ivec2(x), vec4(weight.x, weight.y, x.y, x.y + offset));
+		}
+		else
+		{
+			imageStore(imageForFFTAux, ivec2(x), vec4(weight.x, weight.y, x.y - offset , x.y));
+		}
+	}
+}

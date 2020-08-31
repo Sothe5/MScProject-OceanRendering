@@ -1,0 +1,102 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+
+layout( local_size_x = 32, local_size_y = 32 ) in;
+
+layout( push_constant ) uniform pushConstants {
+  int fourierGridSize;
+  int swap;
+} pc;
+
+layout(binding = 8, rgba32f) uniform readonly image2D imageForAlternate0;
+layout(binding = 14, rgba32f) uniform readonly image2D imageForAlternate1;
+layout(binding = 19, rgba32f) uniform  image2D imageForAlternate0SlopeX;
+layout(binding = 21, rgba32f) uniform  image2D imageForAlternate1SlopeX;
+layout(binding = 23, rgba32f) uniform  image2D imageForAlternate0SlopeZ;
+layout(binding = 25, rgba32f) uniform  image2D imageForAlternate1SlopeZ;
+layout(binding = 27, rgba32f) uniform  image2D imageForAlternate0DispX;
+layout(binding = 29, rgba32f) uniform  image2D imageForAlternate1DispX;
+layout(binding = 31, rgba32f) uniform  image2D imageForAlternate0DispZ;
+layout(binding = 33, rgba32f) uniform  image2D imageForAlternate1DispZ;
+layout(binding = 16, rgba32f) uniform writeonly image2D imageForHeightMap;
+layout(binding = 35, rgba32f) uniform writeonly image2D imageForSlopeX;
+layout(binding = 38, rgba32f) uniform writeonly image2D imageForSlopeZ;
+layout(binding = 41, rgba32f) uniform writeonly image2D imageForDispX;
+layout(binding = 44, rgba32f) uniform writeonly image2D imageForDispZ;
+
+
+void main() {
+	ivec2 x = ivec2(gl_GlobalInvocationID.xy);
+
+	float sign = -1.0;
+
+	if(int(mod(x.x + x.y,2)) == 0)
+	{
+		sign = 1.0;
+	}
+
+	if(pc.swap == 0)
+	{			
+		
+		float res = imageLoad(imageForAlternate0, x).r; 
+		float value = (sign * res)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForHeightMap, x, vec4(vec3(value), 1));
+
+		// SlopeX
+
+		float resSlopeX = imageLoad(imageForAlternate0SlopeX, x).r; 
+		float valueSlopeX = (sign * resSlopeX)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForSlopeX, x, vec4(vec3(valueSlopeX), 1));
+
+		// SlopeZ
+
+		float resSlopeZ = imageLoad(imageForAlternate0SlopeZ, x).r; 
+		float valueSlopeZ = (sign * resSlopeZ)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForSlopeZ, x, vec4(vec3(valueSlopeZ), 1));
+
+		// DispX
+
+		float resDispX = imageLoad(imageForAlternate0DispX, x).r; 
+		float valueDispX = (sign * resDispX)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForDispX, x, vec4(vec3(valueDispX), 1));
+
+		// DispZ
+
+		float resDispZ = imageLoad(imageForAlternate0DispZ, x).r; 
+		float valueDispZ = (sign * resDispZ)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForDispZ, x, vec4(vec3(valueDispZ), 1));
+
+	}
+	else
+	{
+		float res = imageLoad(imageForAlternate1, x).r;
+		float value = (sign * res)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForHeightMap, x, vec4(vec3(value), 1));
+
+		// SlopeX
+
+		float resSlopeX = imageLoad(imageForAlternate1SlopeX, x).r; 
+		float valueSlopeX = (sign * resSlopeX)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForSlopeX, x, vec4(vec3(valueSlopeX), 1));
+
+		// SlopeZ
+
+		float resSlopeZ = imageLoad(imageForAlternate1SlopeZ, x).r; 
+		float valueSlopeZ = (sign * resSlopeZ)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForSlopeZ, x, vec4(vec3(valueSlopeZ), 1));
+
+		// DispX
+
+		float resDispX = imageLoad(imageForAlternate1DispX, x).r; 
+		float valueDispX = (sign * resDispX)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForDispX, x, vec4(vec3(valueDispX), 1));
+
+		// DispZ
+
+		float resDispZ = imageLoad(imageForAlternate1DispZ, x).r; 
+		float valueDispZ = (sign * resDispZ)  / (float(pc.fourierGridSize) * float(pc.fourierGridSize));
+		imageStore(imageForDispZ, x, vec4(vec3(valueDispZ), 1));
+
+	}
+
+}

@@ -1,0 +1,114 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+
+layout( local_size_x = 32, local_size_y = 32 ) in;
+
+layout( push_constant ) uniform pushConstants {
+  int stage;
+  int swap;
+} pc;
+
+layout(binding = 11, rgba32f) uniform readonly image2D imageForFFTAux;
+layout(binding = 8, rgba32f) uniform  image2D imageForAlternate0;
+layout(binding = 14, rgba32f) uniform  image2D imageForAlternate1;
+layout(binding = 19, rgba32f) uniform  image2D imageForAlternate0SlopeX;
+layout(binding = 21, rgba32f) uniform  image2D imageForAlternate1SlopeX;
+layout(binding = 23, rgba32f) uniform  image2D imageForAlternate0SlopeZ;
+layout(binding = 25, rgba32f) uniform  image2D imageForAlternate1SlopeZ;
+layout(binding = 27, rgba32f) uniform  image2D imageForAlternate0DispX;
+layout(binding = 29, rgba32f) uniform  image2D imageForAlternate1DispX;
+layout(binding = 31, rgba32f) uniform  image2D imageForAlternate0DispZ;
+layout(binding = 33, rgba32f) uniform  image2D imageForAlternate1DispZ;
+
+
+
+vec2 mul(vec2 v1, vec2 v2)
+{
+	return vec2(v1.x * v2.x - v1.y * v2.y, v1.x * v2.y + v1.y * v2.x);
+}
+
+vec2 add(vec2 v1, vec2 v2)
+{
+	return vec2(v1.x + v2.x, v1.y + v2.y);
+}
+
+void main() {
+	ivec2 x = ivec2(gl_GlobalInvocationID.xy);
+	vec4 FFTAuxTexture = imageLoad(imageForFFTAux, ivec2(pc.stage, x.x)).rgba;
+
+	if(pc.swap == 0)
+	{
+		vec2 a = imageLoad(imageForAlternate0, ivec2(FFTAuxTexture.z, x.y)).rg;
+		vec2 b = imageLoad(imageForAlternate0, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		vec2 res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate1, x, vec4(res.xy,0,1));
+
+
+		// SlopeX
+		a = imageLoad(imageForAlternate0SlopeX, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate0SlopeX, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate1SlopeX, x, vec4(res.xy,0,1));
+
+		// SlopeZ
+		a = imageLoad(imageForAlternate0SlopeZ, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate0SlopeZ, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate1SlopeZ, x, vec4(res.xy,0,1));
+
+		// DispX
+		a = imageLoad(imageForAlternate0DispX, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate0DispX, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate1DispX, x, vec4(res.xy,0,1));
+
+		// DispZ
+		a = imageLoad(imageForAlternate0DispZ, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate0DispZ, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate1DispZ, x, vec4(res.xy,0,1));
+	}
+	else
+	{
+		vec2 a = imageLoad(imageForAlternate1, ivec2(FFTAuxTexture.z, x.y)).rg;
+		vec2 b = imageLoad(imageForAlternate1, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		vec2 res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate0, x, vec4(res.xy,0,1));
+
+		// SlopeX
+		a = imageLoad(imageForAlternate1SlopeX, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate1SlopeX, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate0SlopeX, x, vec4(res.xy,0,1));
+
+		// SlopeZ
+		a = imageLoad(imageForAlternate1SlopeZ, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate1SlopeZ, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate0SlopeZ, x, vec4(res.xy,0,1));
+	
+		// DispX
+		a = imageLoad(imageForAlternate1DispX, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate1DispX, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate0DispX, x, vec4(res.xy,0,1));
+
+		// DispZ
+		a = imageLoad(imageForAlternate1DispZ, ivec2(FFTAuxTexture.z, x.y)).rg;
+		b = imageLoad(imageForAlternate1DispZ, ivec2(FFTAuxTexture.w, x.y)).rg;
+
+		res = add(a, mul(FFTAuxTexture.xy, b));
+		imageStore(imageForAlternate0DispZ, x, vec4(res.xy,0,1));
+	
+	}
+
+}
