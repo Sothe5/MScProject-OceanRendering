@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="16_swap_chain_recreation.cpp" />
+    <ClCompile Include="MainRenderer.cpp" />
     <ClCompile Include="imGui\imgui.cpp" />
     <ClCompile Include="imGui\imgui_demo.cpp" />
     <ClCompile Include="imGui\imgui_draw.cpp" />
@@ -48,6 +48,7 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>testVulkan</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <ProjectName>VulkanOcean</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
