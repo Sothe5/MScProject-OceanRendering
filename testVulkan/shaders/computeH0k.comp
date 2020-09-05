@@ -24,8 +24,8 @@ layout(std140, binding = 3) buffer StorageBufferGaussianNoise {
 
 layout( local_size_x = 32, local_size_y = 32 ) in;
 
-layout(binding = 4, rgba32f) writeonly uniform image2D imageForHk0;
-layout(binding = 6, rgba32f) writeonly uniform image2D imageForHk0minus;
+layout(binding = 4, rg32f) writeonly uniform image2D imageForHk0;
+layout(binding = 6, rg32f) writeonly uniform image2D imageForHk0minus;
 
 vec2 Conjugate(vec2 v)
 {

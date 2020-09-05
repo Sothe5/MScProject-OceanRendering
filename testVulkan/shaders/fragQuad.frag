@@ -60,27 +60,27 @@ void main() {
 	}else if(pc.isHeightMap == 1)
 	{
 		vec4 textureSampled = texture(texSamplerHeightMap, fragTexCoord);
-		outColor = vec4(textureSampled.xyz,1);
+		outColor = vec4(vec3(textureSampled.x),1);
 	}
 	else if(pc.isSlopeX == 1)
 	{
 		vec4 textureSampled = texture(texSamplerSlopeX, fragTexCoord);
-		outColor = vec4(textureSampled.xyz,1);
+		outColor = vec4(vec3(textureSampled.x),1);
 	}
 	else if(pc.isSlopeZ == 1)
 	{
 		vec4 textureSampled = texture(texSamplerSlopeZ, fragTexCoord);
-		outColor = vec4(textureSampled.xyz,1);
+		outColor = vec4(vec3(textureSampled.x),1);
 	}
 	else if(pc.isDispX == 1)
 	{
 		vec4 textureSampled = texture(texSamplerDispX, fragTexCoord);
-		outColor = vec4(textureSampled.xyz,1);
+		outColor = vec4(vec3(textureSampled.x),1);
 	}
 	else if(pc.isDispZ == 1)
 	{
 		vec4 textureSampled = texture(texSamplerDispZ, fragTexCoord);
-		outColor = vec4(textureSampled.xyz,1);
+		outColor = vec4(vec3(textureSampled.x),1);
 	}else
 	{
 		outColor = vec4(1);

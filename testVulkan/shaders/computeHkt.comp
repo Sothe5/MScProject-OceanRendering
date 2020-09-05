@@ -16,13 +16,13 @@ layout( push_constant ) uniform pushConstants {
 
 layout( local_size_x = 32, local_size_y = 32 ) in;
 
-layout(binding = 4, rgba32f) uniform readonly image2D imageForHk0;
-layout(binding = 6, rgba32f) uniform readonly image2D imageForHk0minus;
-layout(binding = 8, rgba32f) uniform writeonly image2D imageForHkt;
-layout(binding = 19, rgba32f) uniform writeonly image2D imageForSlopeX;
-layout(binding = 23, rgba32f) uniform writeonly image2D imageForSlopeZ;
-layout(binding = 27, rgba32f) uniform writeonly image2D imageForDispX;
-layout(binding = 31, rgba32f) uniform writeonly image2D imageForDispZ;
+layout(binding = 4, rg32f) uniform readonly image2D imageForHk0;
+layout(binding = 6, rg32f) uniform readonly image2D imageForHk0minus;
+layout(binding = 8, rg32f) uniform writeonly image2D imageForHkt;
+layout(binding = 19, rg32f) uniform writeonly image2D imageForSlopeX;
+layout(binding = 23, rg32f) uniform writeonly image2D imageForSlopeZ;
+layout(binding = 27, rg32f) uniform writeonly image2D imageForDispX;
+layout(binding = 31, rg32f) uniform writeonly image2D imageForDispZ;
 
 vec2 mul(vec2 v1, vec2 v2)
 {

@@ -9,16 +9,16 @@ layout( push_constant ) uniform pushConstants {
 } pc;
 
 layout(binding = 11, rgba32f) uniform readonly image2D imageForFFTAux;
-layout(binding = 8, rgba32f) uniform  image2D imageForAlternate0;
-layout(binding = 14, rgba32f) uniform  image2D imageForAlternate1;
-layout(binding = 19, rgba32f) uniform  image2D imageForAlternate0SlopeX;
-layout(binding = 21, rgba32f) uniform  image2D imageForAlternate1SlopeX;
-layout(binding = 23, rgba32f) uniform  image2D imageForAlternate0SlopeZ;
-layout(binding = 25, rgba32f) uniform  image2D imageForAlternate1SlopeZ;
-layout(binding = 27, rgba32f) uniform  image2D imageForAlternate0DispX;
-layout(binding = 29, rgba32f) uniform  image2D imageForAlternate1DispX;
-layout(binding = 31, rgba32f) uniform  image2D imageForAlternate0DispZ;
-layout(binding = 33, rgba32f) uniform  image2D imageForAlternate1DispZ;
+layout(binding = 8, rg32f) uniform  image2D imageForAlternate0;
+layout(binding = 14, rg32f) uniform  image2D imageForAlternate1;
+layout(binding = 19, rg32f) uniform  image2D imageForAlternate0SlopeX;
+layout(binding = 21, rg32f) uniform  image2D imageForAlternate1SlopeX;
+layout(binding = 23, rg32f) uniform  image2D imageForAlternate0SlopeZ;
+layout(binding = 25, rg32f) uniform  image2D imageForAlternate1SlopeZ;
+layout(binding = 27, rg32f) uniform  image2D imageForAlternate0DispX;
+layout(binding = 29, rg32f) uniform  image2D imageForAlternate1DispX;
+layout(binding = 31, rg32f) uniform  image2D imageForAlternate0DispZ;
+layout(binding = 33, rg32f) uniform  image2D imageForAlternate1DispZ;
 
 vec2 mul(vec2 v1, vec2 v2)
 {
