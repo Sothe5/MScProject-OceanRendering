@@ -12,3 +12,5 @@ The libraries that are used in this project are already in the project. The only
 The final results can be found by clicking the next image.
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/HJNlAffPba0/0.jpg)](https://www.youtube.com/watch?v=HJNlAffPba0)
+
+And the thesis of the project can be found here https://drive.google.com/file/d/1QACfZEApl2xIRCM20cG9D3hmoB5tM7Eq/view?usp=sharing
